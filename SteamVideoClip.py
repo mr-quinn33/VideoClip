@@ -17,6 +17,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.video_path = ''   #视频路径
         self.init_timer()
         self.cap = cv2.VideoCapture()
+        self.start_time = 0
+        self.finish_time = 0
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -148,15 +150,17 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def init_slots(self):
         self.pushButton.clicked.connect(self.split_video_to_gifs)  # 连接切片函数
+        self.time_start.textChanged.connect(self.read_time_start)
         # self.comboBoxModel.currentTextChanged.connect(self.ModelChanged)
         # self.comboBoxScale.currentTextChanged.connect(self.ScaleChanged)
         self.toolButtonInput.clicked.connect(self.InpurDir)           # 连接视频路径选择函数
         # self.toolButtonOutput.clicked.connect(self.SaveResults)
         # self.pushButton_2.clicked.connect(self.close)
-        pix = QPixmap('template_1.png')
+        pix = QPixmap('template_1.png')        #设置label图片
         self.label_template.setPixmap(pix)
         self.label_template.setScaledContents(True)  # 自适应QLabel大小
         #self.label.setPixmap(self.pixmap.scaled(self.label.size(), aspectRatioMode=Qt.KeepAspectRatio))  # 在label上显示图片
+
     def InpurDir(self):
         video_type = [".mp4", ".mkv", ".MOV", "avi"]
         self.video_path = QtWidgets.QFileDialog.getOpenFileName()[0]
@@ -168,11 +172,26 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         #             QtWidgets.QMessageBox.information(self, "Wrong", "不支持该格式", QtWidgets.QMessageBox.Yes,
         #                                               QtWidgets.QMessageBox.Yes)
         #             break
-        print("选择的输入视频路径：", self.video_path)
+        print("选择输入视频路径：", self.video_path)
         self.textEdit.setPlainText(self.video_path)
         print("videoIsOpen")
+
+        # 获取视频时长,并设置文本框中时间
+        duration = self.get_video_duration()
+        self.finish_time = duration
+        self.time_start.setText("0")
+        self.textEdit_3.setText(str(duration))
+
         self.cap.open(self.video_path) #打开视频
         self.timer.start(30)   #设置视频播放计时器
+
+    def get_video_duration(self):
+        video = cv2.VideoCapture(self.video_path)
+        frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+        frame_rate = video.get(cv2.CAP_PROP_FPS)
+        duration = int(frame_count / frame_rate)
+        video.release()
+        return duration
 
     def init_timer(self):
         self.timer = QTimer(self)
@@ -184,17 +203,24 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             cur_frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
             # 视频流的长和宽
-            height, width = cur_frame.shape[:2]
+            height, width = img.shape[:2]
+            # 对视频进行缩放，适应label大小
+            cur_frame = cv2.resize(cur_frame,(0, 0), fx= width / self.label.width(),fy= height / self.label.height())
+            cur_frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
             pixmap = QImage(cur_frame, width, height, QImage.Format_RGB888)
             pixmap = QPixmap.fromImage(pixmap)
-
-            # 获取是视频流和label窗口的长宽比值的最大值，适应label窗口播放，不然显示不全
-            ratio = max(width / self.label.width(), height / self.label.height())
-            pixmap.setDevicePixelRatio(ratio)
+            # ratio = max(width / self.label.width(), height / self.label.height())
+            # pixmap.setDevicePixelRatio(ratio)
             # 视频流置于label中间部分播放
             self.label.setAlignment(Qt.AlignCenter)
             self.label.setPixmap(pixmap)
 
+    def read_time_start(self):
+        #if self.time_start.text():
+        #     self.start_time =int(self.time_start.text())
+        print(self.start_time)
+        #print(self.time_start.text())
     def split_video_to_gifs(self):
         # 读取视频文件
         video = moviepy.editor.VideoFileClip(self.video_path).subclip(0, 10)  # 取前10秒
