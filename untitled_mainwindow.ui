@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>502</width>
-    <height>439</height>
+    <width>501</width>
+    <height>431</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -117,25 +117,6 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="pushButton_2">
-       <property name="minimumSize">
-        <size>
-         <width>70</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>70</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>关闭</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QPushButton" name="pushButton">
        <property name="minimumSize">
         <size>
@@ -154,6 +135,25 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="minimumSize">
+        <size>
+         <width>70</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>70</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>关闭</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QLabel" name="label_template">
@@ -169,7 +169,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -237,7 +237,46 @@
       </widget>
      </item>
      <item>
-      <widget class="QTextEdit" name="textEdit_3"/>
+      <widget class="QTextEdit" name="time_finish"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>350</y>
+      <width>291</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QLabel" name="label_8">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>130</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>输出的切片名称：</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTextEdit" name="output_name"/>
      </item>
     </layout>
    </widget>
@@ -247,7 +286,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>502</width>
+     <width>501</width>
      <height>23</height>
     </rect>
    </property>
