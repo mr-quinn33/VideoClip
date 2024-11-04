@@ -284,6 +284,20 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         print("ok")
         QtWidgets.QMessageBox.information(self, "Result", "Done", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
 
+    # 更改最后一个字节为21
+    # def modify_gif_hex(input_path, output_path):
+    #     # 打开 GIF 文件
+    #     with open(input_path, 'rb') as f:
+    #         gif_data = bytearray(f.read())
+    #
+    #     # 修改最后一个字节为 21
+    #     if len(gif_data) >= 2:
+    #         gif_data[-1] = 0x21
+    #         # gif_data[-2] = 0x21
+    #
+    #     # 保存修改后的 GIF 文件
+    #     with open(output_path, 'wb') as f:
+    #         f.write(gif_data)
 
 #output_gif_prefix = "output_gif"  # 输出 GIF 文件的前缀
 # split_video_to_gifs(input_video, output_gif_prefix)
