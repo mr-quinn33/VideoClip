@@ -19,6 +19,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.cap = cv2.VideoCapture()
         self.start_time = 0
         self.finish_time = 0
+        self.video_fps = 0
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -202,9 +203,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         # 获取视频时长,并设置文本框中时间
         duration = self.get_video_duration()
-        self.finish_time = duration
         self.time_start.setText("0")
-        self.time_finish.setText(str(duration))
+        if duration < 15:
+            self.finish_time = duration
+            self.time_finish.setText(str(duration))
+        else:
+            self.finish_time = 15
+            self.time_finish.setText("15")
 
         self.cap.open(self.video_path) #打开视频
         self.timer.start(30)   #设置视频播放计时器
@@ -213,6 +218,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         video = cv2.VideoCapture(self.video_path)
         frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_rate = video.get(cv2.CAP_PROP_FPS)
+        self.video_fps = int(frame_rate)               #更新视频帧率
+        print("fps:", self.video_fps)
         duration = int(frame_count / frame_rate)
         video.release()
         return duration
@@ -245,14 +252,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             print("minite")
         else:
             self.start_time =int(self.time_start.toPlainText())
-            print(self.start_time)
+            print("start time:", self.start_time)
 
     def read_time_finish(self):
         if ":" in self.time_finish.toPlainText():
             print("minite")
         else:
             self.finish_time =int(self.time_finish.toPlainText())
-            print(self.finish_time)
+            print("finish time:", self.finish_time)
 
     def split_video_to_gifs(self):
         # 读取视频文件
@@ -284,20 +291,20 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         print("ok")
         QtWidgets.QMessageBox.information(self, "Result", "Done", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
 
-    # 更改最后一个字节为21
-    # def modify_gif_hex(input_path, output_path):
-    #     # 打开 GIF 文件
-    #     with open(input_path, 'rb') as f:
-    #         gif_data = bytearray(f.read())
-    #
-    #     # 修改最后一个字节为 21
-    #     if len(gif_data) >= 2:
-    #         gif_data[-1] = 0x21
-    #         # gif_data[-2] = 0x21
-    #
-    #     # 保存修改后的 GIF 文件
-    #     with open(output_path, 'wb') as f:
-    #         f.write(gif_data)
+        # 更改最后一个字节为21
+        for i in range(1,5):
+            path = f"{self.output_name.toPlainText()}_part{i}.gif"
+            with open(path, 'rb') as f:
+                gif_data = bytearray(f.read())
+
+            # 修改最后一个字节为 21
+            if len(gif_data) >= 2:
+                gif_data[-1] = 0x21
+
+            # 保存修改后的 GIF 文件
+            with open(path, 'wb') as f:
+                f.write(gif_data)
+
 
 #output_gif_prefix = "output_gif"  # 输出 GIF 文件的前缀
 # split_video_to_gifs(input_video, output_gif_prefix)
