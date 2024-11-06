@@ -6,7 +6,9 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 import sys
 import cv2
-
+import os
+from PIL import Image
+from PIL import ImageSequence
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -197,22 +199,23 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         #             QtWidgets.QMessageBox.information(self, "Wrong", "不支持该格式", QtWidgets.QMessageBox.Yes,
         #                                               QtWidgets.QMessageBox.Yes)
         #             break
-        print("选择输入视频路径：", self.video_path)
-        self.textEdit.setPlainText(self.video_path)
-        print("videoIsOpen")
+        if self.video_path:
+            print("选择输入视频路径：", self.video_path)
+            self.textEdit.setPlainText(self.video_path)
+            print("videoIsOpen")
 
-        # 获取视频时长,并设置文本框中时间
-        duration = self.get_video_duration()
-        self.time_start.setText("0")
-        if duration < 15:
-            self.finish_time = duration
-            self.time_finish.setText(str(duration))
-        else:
-            self.finish_time = 15
-            self.time_finish.setText("15")
+            # 获取视频时长,并设置文本框中时间
+            duration = self.get_video_duration()
+            self.time_start.setText("0")
+            if duration < 15:
+                self.finish_time = duration
+                self.time_finish.setText(str(duration))
+            else:
+                self.finish_time = 15
+                self.time_finish.setText("15")
 
-        self.cap.open(self.video_path) #打开视频
-        self.timer.start(30)   #设置视频播放计时器
+            self.cap.open(self.video_path) #打开视频
+            self.timer.start(30)   #设置视频播放计时器
 
     def get_video_duration(self):
         video = cv2.VideoCapture(self.video_path)
@@ -289,7 +292,29 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         # 关闭视频文件
         video.close()
         print("ok")
-        QtWidgets.QMessageBox.information(self, "Result", "Done", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
+
+        max_size = 5 * 1024 * 1024  # 5MB in bytes
+
+        # 检查文件大小
+        file_size = os.path.getsize('output_gif_part5.gif')
+        if file_size <= max_size:
+            print("文件大小小于 5MB，不需要调整。")
+            # return
+        else:
+            print("文件大小大于 5MB，需要调整。")
+
+        # 修改文件大小
+        for i in range(1, 6):
+            im = Image.open(f"{self.output_name.toPlainText()}_part{i}.gif")
+            # 计算缩放比例
+            original_width, original_height = im.size
+            scale_factor = (max_size / file_size) ** 0.5
+            new_width = int(original_width * scale_factor * 0.95)  # 0.95为缩放调节因子
+            new_height = int(original_height * scale_factor * 0.95)
+
+            resize_frames = [frame.resize((new_width, new_height)) for frame in ImageSequence.Iterator(im)]
+            resize_frames[0].save(f"{self.output_name.toPlainText()}_part{i}.gif", save_all=True, append_images=resize_frames[1:])
+            print("resize Done!")
 
         # 更改最后一个字节为21
         for i in range(1,5):
@@ -305,6 +330,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             with open(path, 'wb') as f:
                 f.write(gif_data)
 
+        QtWidgets.QMessageBox.information(self, "Result", "Done", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
 
 #output_gif_prefix = "output_gif"  # 输出 GIF 文件的前缀
 # split_video_to_gifs(input_video, output_gif_prefix)
