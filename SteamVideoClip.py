@@ -295,26 +295,26 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         max_size = 5 * 1024 * 1024  # 5MB in bytes
 
-        # 检查文件大小
+        # 检查文件大小,如果过大则进行缩小
         file_size = os.path.getsize('output_gif_part5.gif')
         if file_size <= max_size:
             print("文件大小小于 5MB，不需要调整。")
-            # return
+
         else:
             print("文件大小大于 5MB，需要调整。")
 
-        # 修改文件大小
-        for i in range(1, 6):
-            im = Image.open(f"{self.output_name.toPlainText()}_part{i}.gif")
-            # 计算缩放比例
-            original_width, original_height = im.size
-            scale_factor = (max_size / file_size) ** 0.5
-            new_width = int(original_width * scale_factor * 0.95)  # 0.95为缩放调节因子
-            new_height = int(original_height * scale_factor * 0.95)
+            # 修改文件大小
+            for i in range(1, 6):
+                im = Image.open(f"{self.output_name.toPlainText()}_part{i}.gif")
+                # 计算缩放比例
+                original_width, original_height = im.size
+                scale_factor = (max_size / file_size) ** 0.5
+                new_width = int(original_width * scale_factor * 0.95)  # 0.95为缩放调节因子
+                new_height = int(original_height * scale_factor * 0.95)
 
-            resize_frames = [frame.resize((new_width, new_height)) for frame in ImageSequence.Iterator(im)]
-            resize_frames[0].save(f"{self.output_name.toPlainText()}_part{i}.gif", save_all=True, append_images=resize_frames[1:])
-            print("resize Done!")
+                resize_frames = [frame.resize((new_width, new_height)) for frame in ImageSequence.Iterator(im)]
+                resize_frames[0].save(f"{self.output_name.toPlainText()}_part{i}.gif", save_all=True, append_images=resize_frames[1:])
+                print("resize Done!")
 
         # 更改最后一个字节为21
         for i in range(1,5):
