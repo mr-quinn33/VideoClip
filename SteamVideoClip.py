@@ -9,6 +9,9 @@ import cv2
 import os
 from PIL import Image
 from PIL import ImageSequence
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -25,7 +28,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(501, 431)
+        MainWindow.resize(505, 474)
+        MainWindow.setMinimumSize(QtCore.QSize(505, 474))
+        MainWindow.setMaximumSize(QtCore.QSize(505, 474))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -105,12 +110,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
         self.label_6.setSizePolicy(sizePolicy)
         self.label_6.setMinimumSize(QtCore.QSize(130, 30))
+        self.label_6.setMaximumSize(QtCore.QSize(16777215, 30))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
         self.horizontalLayout_3.addWidget(self.label_6)
         self.time_start = QtWidgets.QTextEdit(self.layoutWidget1)
+        self.time_start.setMaximumSize(QtCore.QSize(16777215, 30))
         self.time_start.setObjectName("time_start")
         self.horizontalLayout_3.addWidget(self.time_start)
         self.label_7 = QtWidgets.QLabel(self.layoutWidget1)
@@ -120,39 +127,92 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
         self.label_7.setSizePolicy(sizePolicy)
         self.label_7.setMinimumSize(QtCore.QSize(40, 30))
-        self.label_7.setMaximumSize(QtCore.QSize(40, 16777215))
+        self.label_7.setMaximumSize(QtCore.QSize(40, 30))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_7.setFont(font)
         self.label_7.setObjectName("label_7")
         self.horizontalLayout_3.addWidget(self.label_7)
         self.time_finish = QtWidgets.QTextEdit(self.layoutWidget1)
+        self.time_finish.setMaximumSize(QtCore.QSize(16777215, 30))
         self.time_finish.setObjectName("time_finish")
         self.horizontalLayout_3.addWidget(self.time_finish)
-        self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(10, 350, 291, 31))
-        self.widget.setObjectName("widget")
-        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widget)
+        self.layoutWidget2 = QtWidgets.QWidget(self.centralwidget)
+        self.layoutWidget2.setGeometry(QtCore.QRect(10, 350, 281, 31))
+        self.layoutWidget2.setObjectName("layoutWidget2")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.layoutWidget2)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.label_8 = QtWidgets.QLabel(self.widget)
+        self.label_8 = QtWidgets.QLabel(self.layoutWidget2)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
         self.label_8.setSizePolicy(sizePolicy)
         self.label_8.setMinimumSize(QtCore.QSize(130, 30))
+        self.label_8.setMaximumSize(QtCore.QSize(16777215, 30))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_8.setFont(font)
         self.label_8.setObjectName("label_8")
         self.horizontalLayout_4.addWidget(self.label_8)
-        self.output_name = QtWidgets.QTextEdit(self.widget)
+        self.output_name = QtWidgets.QTextEdit(self.layoutWidget2)
+        self.output_name.setMinimumSize(QtCore.QSize(0, 30))
+        self.output_name.setMaximumSize(QtCore.QSize(16777215, 30))
         self.output_name.setObjectName("output_name")
         self.horizontalLayout_4.addWidget(self.output_name)
+        self.widget = QtWidgets.QWidget(self.centralwidget)
+        self.widget.setGeometry(QtCore.QRect(10, 390, 481, 32))
+        self.widget.setObjectName("widget")
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.widget)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.label_9 = QtWidgets.QLabel(self.widget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
+        self.label_9.setSizePolicy(sizePolicy)
+        self.label_9.setMinimumSize(QtCore.QSize(70, 30))
+        self.label_9.setMaximumSize(QtCore.QSize(70, 30))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_9.setFont(font)
+        self.label_9.setObjectName("label_9")
+        self.horizontalLayout_5.addWidget(self.label_9)
+        self.comboBox = QtWidgets.QComboBox(self.widget)
+        self.comboBox.setMinimumSize(QtCore.QSize(80, 30))
+        self.comboBox.setMaximumSize(QtCore.QSize(80, 30))
+        self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.horizontalLayout_5.addWidget(self.comboBox)
+        self.label_10 = QtWidgets.QLabel(self.widget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
+        self.label_10.setSizePolicy(sizePolicy)
+        self.label_10.setMinimumSize(QtCore.QSize(100, 30))
+        self.label_10.setMaximumSize(QtCore.QSize(100, 30))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_10")
+        self.horizontalLayout_5.addWidget(self.label_10)
+        self.workshop_name = QtWidgets.QTextEdit(self.widget)
+        self.workshop_name.setMinimumSize(QtCore.QSize(0, 30))
+        self.workshop_name.setMaximumSize(QtCore.QSize(100, 30))
+        self.workshop_name.setObjectName("workshop_name")
+        self.horizontalLayout_5.addWidget(self.workshop_name)
+        self.pushButton_3 = QtWidgets.QPushButton(self.widget)
+        self.pushButton_3.setMinimumSize(QtCore.QSize(70, 30))
+        self.pushButton_3.setMaximumSize(QtCore.QSize(70, 30))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.horizontalLayout_5.addWidget(self.pushButton_3)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 501, 23))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 505, 23))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -172,12 +232,18 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.label_6.setText(_translate("MainWindow", "选择视频时长：从"))
         self.label_7.setText(_translate("MainWindow", "到"))
         self.label_8.setText(_translate("MainWindow", "输出的切片名称："))
+        self.label_9.setText(_translate("MainWindow", "浏览器："))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Edge"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "Chorme"))
+        self.label_10.setText(_translate("MainWindow", "创意工坊名称："))
+        self.pushButton_3.setText(_translate("MainWindow", "上传"))
 
     def init_slots(self):
         self.pushButton.clicked.connect(self.split_video_to_gifs)  # 连接切片函数
         self.time_start.textChanged.connect(self.read_time_start)
         self.time_finish.textChanged.connect(self.read_time_finish)
         self.toolButtonInput.clicked.connect(self.InpurDir)           # 连接视频路径选择函数
+        self.pushButton_3.clicked.connect(self.upload_gif)
         # self.toolButtonOutput.clicked.connect(self.SaveResults)
         self.pushButton_2.clicked.connect(self.close)
 
@@ -334,6 +400,83 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 f.write(gif_data)
 
         QtWidgets.QMessageBox.information(self, "Result", "Done", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
+
+    def upload_gif(self):
+        driver = webdriver.Edge()
+        driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
+        time.sleep(5)
+
+        # 从文本文件逐行读取,输入到用户名和密码，并点击登录
+        with open("strings.txt", "r", encoding="utf-8") as file:
+            line1 = file.readline().strip()
+            line2 = file.readline().strip()
+            print("ID:", line1)
+            print("PASSWORD:", line2)
+            input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input')  # 获取该输入框的Xpath
+            input_element.clear()  # 清除该输入框中的原本内容
+            input_element.send_keys(line1)  # 向该输入框中添加搜索词
+            input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[2]/input')  # 获取该输入框的Xpath
+            input_element.clear()  # 清除该输入框中的原本内容
+            input_element.send_keys(line2)  # 向该输入框中添加搜索词
+            driver.find_element(By.CLASS_NAME, "LBS7IDpob52Sb4ZoKobh0").click()
+            driver.find_element(By.CLASS_NAME, "DjSvCZoKKfoNSmarsEcTS").click()
+
+        # 判断是否登录成功
+        while True:
+            if driver.current_url == "https://steamcommunity.com/sharedfiles/edititem/767/3/":
+                print("login sussessfully")
+                break
+        time.sleep(1)
+
+        # #把密码和用户名保存到txt文件中
+        # # 获取用户输入
+        # string1 = input("请输入第一条字符串: ")
+        # string2 = input("请输入第二条字符串: ")
+        #
+        # # 保存到文本文件
+        # with open("strings.txt", "w", encoding="utf-8") as file:
+        #     file.write(string1 + "\n")
+        #     file.write(string2 + "\n")
+        for i in range(1, 6):
+            #从第二次循环开始，每次再打开一次创意工坊界面
+            if i>1:
+                driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
+
+            # 输入标题
+            input_element = driver.find_element(By.CLASS_NAME, 'titleField')
+            input_element.clear()  # 清除该输入框中的原本内容
+            input_element.send_keys("test")  # 向该输入框中添加
+            # time.sleep(0.5)
+
+            # 上传gif文件
+            dir_path = os.path.abspath(f"{self.output_name.toPlainText()}_part{i}.gif")
+            driver.find_element(By.ID, 'file').send_keys(dir_path)
+            time.sleep(0.5)
+
+            # 点击选择框
+            driver.find_element(By.ID, "agree_terms").click()
+
+            # 控制台输入命令
+            driver.execute_script('''
+                $J('[name=consumer_app_id]').val(480);
+                $J('[name=file_type]').val(0);
+                $J('[name=visibility]').val(0);
+            ''')
+            print("script input finish")
+
+            # 点击提交
+            driver.find_element(By.XPATH, '//*[@id="SubmitItemForm"]/div[6]/a[2]').click()
+            time.sleep(0.5)
+
+            # 保存创意工坊的url
+            # while True:
+            #     if driver.current_url != "https://steamcommunity.com/sharedfiles/edititem/767/3/":
+            #         url = driver.current_url
+            #         with open("url.txt", "w", encoding="utf-8") as file:
+            #             file.write(url + "\n")
+            #         break
+
+        print("upload finish")
 
 #output_gif_prefix = "output_gif"  # 输出 GIF 文件的前缀
 # split_video_to_gifs(input_video, output_gif_prefix)
