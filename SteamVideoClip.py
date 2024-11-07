@@ -177,11 +177,10 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.pushButton.clicked.connect(self.split_video_to_gifs)  # 连接切片函数
         self.time_start.textChanged.connect(self.read_time_start)
         self.time_finish.textChanged.connect(self.read_time_finish)
-        # self.comboBoxModel.currentTextChanged.connect(self.ModelChanged)
-        # self.comboBoxScale.currentTextChanged.connect(self.ScaleChanged)
         self.toolButtonInput.clicked.connect(self.InpurDir)           # 连接视频路径选择函数
         # self.toolButtonOutput.clicked.connect(self.SaveResults)
-        # self.pushButton_2.clicked.connect(self.close)
+        self.pushButton_2.clicked.connect(self.close)
+
         pix = QPixmap('template_1.png')        #设置label图片
         self.label_template.setPixmap(pix)
         self.label_template.setScaledContents(True)  # 自适应QLabel大小
@@ -191,14 +190,18 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def InpurDir(self):
         video_type = [".mp4", ".mkv", ".MOV", "avi"]
         self.video_path = QtWidgets.QFileDialog.getOpenFileName()[0]
-        # if self.video_path:
-        #     for vdi in video_type:
-        #         if vdi in self.video_path:
-        #             continue
-        #         else:
-        #             QtWidgets.QMessageBox.information(self, "Wrong", "不支持该格式", QtWidgets.QMessageBox.Yes,
-        #                                               QtWidgets.QMessageBox.Yes)
-        #             break
+
+        #判断是否为视频文件
+        if self.video_path:
+            for vdi in video_type:
+                if vdi in self.video_path:
+                    print("right")
+                    break
+                else:
+                    QtWidgets.QMessageBox.information(self, "Error", "不支持该格式", QtWidgets.QMessageBox.Yes,
+                                                      QtWidgets.QMessageBox.Yes)
+                    return
+
         if self.video_path:
             print("选择输入视频路径：", self.video_path)
             self.textEdit.setPlainText(self.video_path)
@@ -211,8 +214,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 self.finish_time = duration
                 self.time_finish.setText(str(duration))
             else:
-                self.finish_time = 15
-                self.time_finish.setText("15")
+                self.finish_time = 10
+                self.time_finish.setText("10")
 
             self.cap.open(self.video_path) #打开视频
             self.timer.start(30)   #设置视频播放计时器
