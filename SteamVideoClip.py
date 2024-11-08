@@ -1,5 +1,6 @@
 # from moviepy.editor import VideoFileClip
 import moviepy.editor
+import selenium.webdriver.edge.options
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -305,6 +306,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.output_name.setPlainText("output_gif")
         self.workshop_name.setText('gif') #设置上传名称
 
+        self.checkBox.setChecked(True)
+
     def InpurDir(self):
         video_type = [".mp4", ".mkv", ".MOV", ".avi","m4v"]
         self.video_path = QtWidgets.QFileDialog.getOpenFileName()[0]
@@ -391,6 +394,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             print("finish time:", self.time_finish.toPlainText(), ":", self.time_finish_2.toPlainText())
 
     def split_video_to_gifs(self):
+        #计算时间
         self.start_time = int(self.time_start.toPlainText()) * 60 + int(self.time_start_2.toPlainText())  # 转化为秒
         self.finish_time = int(self.time_finish.toPlainText()) * 60 + int(self.time_finish_2.toPlainText())  # 转化为秒
         # 读取视频文件
@@ -424,11 +428,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         max_size = 5 * 1024 * 1024  # 5MB in bytes
 
         # 检查文件大小,如果过大则进行缩小
-        file_size = os.path.getsize('output_gif_part5.gif')
-        if file_size <= max_size:
+        for i in range(1, 6):
+            file_size = os.path.getsize(f"{self.output_name.toPlainText()}_part{i}.gif")
+            if file_size <= max_size:
+                continue
+            else:
+                print("文件大小大于 5MB，需要调整")
+                break
             print("文件大小小于 5MB，不需要调整")
-        else:
-            print("文件大小大于 5MB，需要调整")
 
             # 修改文件大小
             for i in range(1, 6):
@@ -444,7 +451,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 print("resize Done!")
 
         # 更改最后一个字节为21
-        for i in range(1,5):
+        for i in range(1,6):
             path = f"{self.output_name.toPlainText()}_part{i}.gif"
             with open(path, 'rb') as f:
                 gif_data = bytearray(f.read())
@@ -463,16 +470,19 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         try:
             #判断使用的浏览器
             if self.comboBox.currentText() == 'Edge':
-                driver = webdriver.Edge()
+                op = selenium.webdriver.edge.options.Options()
+                op.page_load_strategy = "eager"
+                driver = webdriver.Edge(options=op)
             elif self.comboBox.currentText() == 'Chorme':
-                driver = webdriver.Chrome()
+                op = selenium.webdriver.chrome.options.Options()
+                driver = webdriver.Chrome(options=op)
 
             #打开网页
             driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
             #time.sleep(5)
 
             #等待网页加载
-            WebDriverWait(driver, 10).until(lambda driver: driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input' )) #.find_element_by_id("someId"))
+            WebDriverWait(driver, 15).until(lambda driver: driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input' )) #.find_element_by_id("someId"))
 
             # 从文本文件逐行读取,输入到用户名和密码，并点击登录
             with open("strings.txt", "r", encoding="utf-8") as file:
@@ -509,6 +519,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 #从第二次循环开始，每次再打开一次创意工坊界面
                 if i > 1:
                     driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
+                    # 等待网页加载
+                    WebDriverWait(driver, 15).until(lambda driver: driver.find_element(By.CLASS_NAME, 'titleField'))
 
                 # 输入标题
                 input_element = driver.find_element(By.CLASS_NAME, 'titleField')
@@ -522,6 +534,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 #time.sleep(0.5)
 
                 # 点击选择框
+
                 driver.find_element(By.ID, "agree_terms").click()
 
                 # 控制台输入命令
@@ -530,26 +543,31 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                     $J('[name=file_type]').val(0);
                     $J('[name=visibility]').val(0);
                 ''')
+                #time.sleep(0.5)
                 #print("script input finish")
 
                 # 点击提交
-                driver.find_element(By.XPATH, '//*[@id="SubmitItemForm"]/div[6]/a[2]').click()
-                #time.sleep(0.5)
+                try:
+                    driver.find_element(By.XPATH, '//*[@id="SubmitItemForm"]/div[6]/a[2]').click()
+                    driver.implicitly_wait(5)
+                except Exception:
+                    print("timeout")
 
                 # 保存创意工坊的url
-                while True:
-                    if driver.current_url != "https://steamcommunity.com/sharedfiles/edititem/767/3/":
-                        url = driver.current_url
-                        if i == 1 :
-                            with open("url.txt", "w", encoding="utf-8") as file:
-                                file.write(url + "\n")
-                        else:
-                            with open("url.txt", "a", encoding="utf-8") as file: #追加内容
-                                file.write(url + "\n")
-                        break
+                # while True:
+                #     if driver.current_url != "https://steamcommunity.com/sharedfiles/edititem/767/3/":
+                #         url = driver.current_url
+                #         if i == 1 :
+                #             with open("url.txt", "w", encoding="utf-8") as file:
+                #                 file.write(url + "\n")
+                #         else:
+                #             with open("url.txt", "a", encoding="utf-8") as file: #追加内容
+                #                 file.write(url + "\n")
+                #         break
 
             print("upload finish")
             QtWidgets.QMessageBox.information(self, "Result", "上传成功", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
+            time.sleep(1)
 
         except:
             QtWidgets.QMessageBox.information(self, "Result", "上传失败", QtWidgets.QMessageBox.Yes,
