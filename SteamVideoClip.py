@@ -368,10 +368,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         # 检查文件大小,如果过大则进行缩小
         file_size = os.path.getsize('output_gif_part5.gif')
         if file_size <= max_size:
-            print("文件大小小于 5MB，不需要调整。")
-
+            print("文件大小小于 5MB，不需要调整")
         else:
-            print("文件大小大于 5MB，需要调整。")
+            print("文件大小大于 5MB，需要调整")
 
             # 修改文件大小
             for i in range(1, 6):
@@ -400,98 +399,104 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             with open(path, 'wb') as f:
                 f.write(gif_data)
 
-        QtWidgets.QMessageBox.information(self, "Result", "Done", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
+        QtWidgets.QMessageBox.information(self, "Result", "切片成功", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
 
     def upload_gif(self):
-        #判断使用的浏览器
-        if self.comboBox.currentText() == 'Edge':
-            driver = webdriver.Edge()
-        elif self.comboBox.currentText() == 'Chorme':
-            driver = webdriver.Chrome()
+        try:
+            #判断使用的浏览器
+            if self.comboBox.currentText() == 'Edge':
+                driver = webdriver.Edge()
+            elif self.comboBox.currentText() == 'Chorme':
+                driver = webdriver.Chrome()
 
-        #打开网页
-        driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
-        #time.sleep(5)
+            #打开网页
+            driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
+            #time.sleep(5)
 
-        #等待网页加载
-        WebDriverWait(driver, 10).until(lambda driver: driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input' )) #.find_element_by_id("someId"))
+            #等待网页加载
+            WebDriverWait(driver, 10).until(lambda driver: driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input' )) #.find_element_by_id("someId"))
 
-        # 从文本文件逐行读取,输入到用户名和密码，并点击登录
-        with open("strings.txt", "r", encoding="utf-8") as file:
-            line1 = file.readline().strip()
-            line2 = file.readline().strip()
-            print("ID:", line1)
-            print("PASSWORD:", line2)
-            input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input')  # 获取该输入框的Xpath
-            input_element.clear()  # 清除该输入框中的原本内容
-            input_element.send_keys(line1)  # 向该输入框中添加搜索词
-            input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[2]/input')  # 获取该输入框的Xpath
-            input_element.clear()  # 清除该输入框中的原本内容
-            input_element.send_keys(line2)  # 向该输入框中添加搜索词
-            driver.find_element(By.CLASS_NAME, "LBS7IDpob52Sb4ZoKobh0").click()
-            driver.find_element(By.CLASS_NAME, "DjSvCZoKKfoNSmarsEcTS").click()
+            # 从文本文件逐行读取,输入到用户名和密码，并点击登录
+            with open("strings.txt", "r", encoding="utf-8") as file:
+                line1 = file.readline().strip()
+                line2 = file.readline().strip()
+                print("ID:", line1)
+                print("PASSWORD:", line2)
+                input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input')  # 获取该输入框的Xpath
+                input_element.clear()  # 清除该输入框中的原本内容
+                input_element.send_keys(line1)  # 向该输入框中添加搜索词
+                input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[2]/input')  # 获取该输入框的Xpath
+                input_element.clear()  # 清除该输入框中的原本内容
+                input_element.send_keys(line2)  # 向该输入框中添加搜索词
+                driver.find_element(By.CLASS_NAME, "LBS7IDpob52Sb4ZoKobh0").click()
+                driver.find_element(By.CLASS_NAME, "DjSvCZoKKfoNSmarsEcTS").click()
 
-        # 判断是否登录成功
-        while True:
-            if driver.current_url == "https://steamcommunity.com/sharedfiles/edititem/767/3/":
-                print("login sussessfully")
-                break
-        # time.sleep(1)
-
-        # #把密码和用户名保存到txt文件中
-        # # 获取用户输入
-        # string1 = input("请输入第一条字符串: ")
-        # string2 = input("请输入第二条字符串: ")
-        #
-        # # 保存到文本文件
-        # with open("strings.txt", "w", encoding="utf-8") as file:
-        #     file.write(string1 + "\n")
-        #     file.write(string2 + "\n")
-        for i in range(1, 6):
-            #从第二次循环开始，每次再打开一次创意工坊界面
-            if i > 1:
-                driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
-
-            # 输入标题
-            input_element = driver.find_element(By.CLASS_NAME, 'titleField')
-            input_element.clear()  # 清除该输入框中的原本内容
-            input_element.send_keys(f"{self.workshop_name.toPlainText()}_{i}")   # 向该输入框中添加
-            # time.sleep(0.5)
-
-            # 上传gif文件
-            dir_path = os.path.abspath(f"{self.output_name.toPlainText()}_part{i}.gif")
-            driver.find_element(By.ID, 'file').send_keys(dir_path)
-            #time.sleep(0.5)
-
-            # 点击选择框
-            driver.find_element(By.ID, "agree_terms").click()
-
-            # 控制台输入命令
-            driver.execute_script('''
-                $J('[name=consumer_app_id]').val(480);
-                $J('[name=file_type]').val(0);
-                $J('[name=visibility]').val(0);
-            ''')
-            #print("script input finish")
-
-            # 点击提交
-            driver.find_element(By.XPATH, '//*[@id="SubmitItemForm"]/div[6]/a[2]').click()
-            #time.sleep(0.5)
-
-            # 保存创意工坊的url
+            # 判断是否登录成功
             while True:
-                if driver.current_url != "https://steamcommunity.com/sharedfiles/edititem/767/3/":
-                    url = driver.current_url
-                    if i == 1 :
-                        with open("url.txt", "w", encoding="utf-8") as file:
-                            file.write(url + "\n")
-                    else:
-                        with open("url.txt", "a", encoding="utf-8") as file: #追加内容
-                            file.write(url + "\n")
+                if driver.current_url == "https://steamcommunity.com/sharedfiles/edititem/767/3/":
+                    print("login sussessfully")
                     break
+            # time.sleep(1)
 
-        print("upload finish")
-        QtWidgets.QMessageBox.information(self, "Result", "上传成功", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
+            # #把密码和用户名保存到txt文件中
+            # # 获取用户输入
+            # string1 = input("请输入第一条字符串: ")
+            # string2 = input("请输入第二条字符串: ")
+            #
+            # # 保存到文本文件
+            # with open("strings.txt", "w", encoding="utf-8") as file:
+            #     file.write(string1 + "\n")
+            #     file.write(string2 + "\n")
+            for i in range(1, 6):
+                #从第二次循环开始，每次再打开一次创意工坊界面
+                if i > 1:
+                    driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
+
+                # 输入标题
+                input_element = driver.find_element(By.CLASS_NAME, 'titleField')
+                input_element.clear()  # 清除该输入框中的原本内容
+                input_element.send_keys(f"{self.workshop_name.toPlainText()}_{i}")   # 向该输入框中添加
+                # time.sleep(0.5)
+
+                # 上传gif文件
+                dir_path = os.path.abspath(f"{self.output_name.toPlainText()}_part{i}.gif")
+                driver.find_element(By.ID, 'file').send_keys(dir_path)
+                #time.sleep(0.5)
+
+                # 点击选择框
+                driver.find_element(By.ID, "agree_terms").click()
+
+                # 控制台输入命令
+                driver.execute_script('''
+                    $J('[name=consumer_app_id]').val(480);
+                    $J('[name=file_type]').val(0);
+                    $J('[name=visibility]').val(0);
+                ''')
+                #print("script input finish")
+
+                # 点击提交
+                driver.find_element(By.XPATH, '//*[@id="SubmitItemForm"]/div[6]/a[2]').click()
+                #time.sleep(0.5)
+
+                # 保存创意工坊的url
+                while True:
+                    if driver.current_url != "https://steamcommunity.com/sharedfiles/edititem/767/3/":
+                        url = driver.current_url
+                        if i == 1 :
+                            with open("url.txt", "w", encoding="utf-8") as file:
+                                file.write(url + "\n")
+                        else:
+                            with open("url.txt", "a", encoding="utf-8") as file: #追加内容
+                                file.write(url + "\n")
+                        break
+
+            print("upload finish")
+            QtWidgets.QMessageBox.information(self, "Result", "上传成功", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
+
+        except:
+            QtWidgets.QMessageBox.information(self, "Result", "上传失败", QtWidgets.QMessageBox.Yes,
+                                              QtWidgets.QMessageBox.Yes)
+
 #output_gif_prefix = "output_gif"  # 输出 GIF 文件的前缀
 # split_video_to_gifs(input_video, output_gif_prefix)
 
