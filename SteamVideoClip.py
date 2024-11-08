@@ -12,6 +12,7 @@ from PIL import ImageSequence
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 class Ui_MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
@@ -251,7 +252,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.label_template.setPixmap(pix)
         self.label_template.setScaledContents(True)  # 自适应QLabel大小
         self.output_name.setPlainText("output_gif")
-        #self.label.setPixmap(self.pixmap.scaled(self.label.size(), aspectRatioMode=Qt.KeepAspectRatio))  # 在label上显示图片
+        self.workshop_name.setText('gif') #设置上传名称
 
     def InpurDir(self):
         video_type = [".mp4", ".mkv", ".MOV", "avi"]
@@ -402,9 +403,18 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         QtWidgets.QMessageBox.information(self, "Result", "Done", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
 
     def upload_gif(self):
-        driver = webdriver.Edge()
+        #判断使用的浏览器
+        if self.comboBox.currentText() == 'Edge':
+            driver = webdriver.Edge()
+        elif self.comboBox.currentText() == 'Chorme':
+            driver = webdriver.Chrome()
+
+        #打开网页
         driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
-        time.sleep(5)
+        #time.sleep(5)
+
+        #等待网页加载
+        WebDriverWait(driver, 10).until(lambda driver: driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input' )) #.find_element_by_id("someId"))
 
         # 从文本文件逐行读取,输入到用户名和密码，并点击登录
         with open("strings.txt", "r", encoding="utf-8") as file:
@@ -426,7 +436,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             if driver.current_url == "https://steamcommunity.com/sharedfiles/edititem/767/3/":
                 print("login sussessfully")
                 break
-        time.sleep(1)
+        # time.sleep(1)
 
         # #把密码和用户名保存到txt文件中
         # # 获取用户输入
@@ -439,19 +449,19 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         #     file.write(string2 + "\n")
         for i in range(1, 6):
             #从第二次循环开始，每次再打开一次创意工坊界面
-            if i>1:
+            if i > 1:
                 driver.get("https://steamcommunity.com/sharedfiles/edititem/767/3/")
 
             # 输入标题
             input_element = driver.find_element(By.CLASS_NAME, 'titleField')
             input_element.clear()  # 清除该输入框中的原本内容
-            input_element.send_keys("test")  # 向该输入框中添加
+            input_element.send_keys(f"{self.workshop_name.toPlainText()}_{i}")   # 向该输入框中添加
             # time.sleep(0.5)
 
             # 上传gif文件
             dir_path = os.path.abspath(f"{self.output_name.toPlainText()}_part{i}.gif")
             driver.find_element(By.ID, 'file').send_keys(dir_path)
-            time.sleep(0.5)
+            #time.sleep(0.5)
 
             # 点击选择框
             driver.find_element(By.ID, "agree_terms").click()
@@ -462,22 +472,26 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 $J('[name=file_type]').val(0);
                 $J('[name=visibility]').val(0);
             ''')
-            print("script input finish")
+            #print("script input finish")
 
             # 点击提交
             driver.find_element(By.XPATH, '//*[@id="SubmitItemForm"]/div[6]/a[2]').click()
-            time.sleep(0.5)
+            #time.sleep(0.5)
 
             # 保存创意工坊的url
-            # while True:
-            #     if driver.current_url != "https://steamcommunity.com/sharedfiles/edititem/767/3/":
-            #         url = driver.current_url
-            #         with open("url.txt", "w", encoding="utf-8") as file:
-            #             file.write(url + "\n")
-            #         break
+            while True:
+                if driver.current_url != "https://steamcommunity.com/sharedfiles/edititem/767/3/":
+                    url = driver.current_url
+                    if i == 1 :
+                        with open("url.txt", "w", encoding="utf-8") as file:
+                            file.write(url + "\n")
+                    else:
+                        with open("url.txt", "a", encoding="utf-8") as file: #追加内容
+                            file.write(url + "\n")
+                    break
 
         print("upload finish")
-
+        QtWidgets.QMessageBox.information(self, "Result", "上传成功", QtWidgets.QMessageBox.Yes, QtWidgets.QMessageBox.Yes)
 #output_gif_prefix = "output_gif"  # 输出 GIF 文件的前缀
 # split_video_to_gifs(input_video, output_gif_prefix)
 
