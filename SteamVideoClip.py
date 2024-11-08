@@ -76,6 +76,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         sizePolicy.setHeightForWidth(self.toolButtonInput.sizePolicy().hasHeightForWidth())
         self.toolButtonInput.setSizePolicy(sizePolicy)
         self.toolButtonInput.setMinimumSize(QtCore.QSize(40, 30))
+        self.toolButtonInput.setMaximumSize(QtCore.QSize(16777215, 30))
         self.toolButtonInput.setObjectName("toolButtonInput")
         self.horizontalLayout.addWidget(self.toolButtonInput)
         self.layoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
@@ -99,7 +100,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.label_template.setText("")
         self.label_template.setObjectName("label_template")
         self.layoutWidget1 = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget1.setGeometry(QtCore.QRect(10, 310, 481, 31))
+        self.layoutWidget1.setGeometry(QtCore.QRect(10, 310, 481, 32))
         self.layoutWidget1.setObjectName("layoutWidget1")
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(self.layoutWidget1)
         self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
@@ -111,35 +112,80 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
         self.label_6.setSizePolicy(sizePolicy)
         self.label_6.setMinimumSize(QtCore.QSize(130, 30))
-        self.label_6.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.label_6.setMaximumSize(QtCore.QSize(130, 30))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_6.setFont(font)
         self.label_6.setObjectName("label_6")
         self.horizontalLayout_3.addWidget(self.label_6)
         self.time_start = QtWidgets.QTextEdit(self.layoutWidget1)
-        self.time_start.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.time_start.setMinimumSize(QtCore.QSize(35, 0))
+        self.time_start.setMaximumSize(QtCore.QSize(35, 30))
         self.time_start.setObjectName("time_start")
         self.horizontalLayout_3.addWidget(self.time_start)
+        self.label_11 = QtWidgets.QLabel(self.layoutWidget1)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_11.sizePolicy().hasHeightForWidth())
+        self.label_11.setSizePolicy(sizePolicy)
+        self.label_11.setMinimumSize(QtCore.QSize(5, 30))
+        self.label_11.setMaximumSize(QtCore.QSize(5, 30))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_11.setFont(font)
+        self.label_11.setObjectName("label_11")
+        self.horizontalLayout_3.addWidget(self.label_11)
+        self.time_start_2 = QtWidgets.QTextEdit(self.layoutWidget1)
+        self.time_start_2.setMinimumSize(QtCore.QSize(35, 0))
+        self.time_start_2.setMaximumSize(QtCore.QSize(35, 30))
+        self.time_start_2.setObjectName("time_start_2")
+        self.horizontalLayout_3.addWidget(self.time_start_2)
         self.label_7 = QtWidgets.QLabel(self.layoutWidget1)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
         self.label_7.setSizePolicy(sizePolicy)
-        self.label_7.setMinimumSize(QtCore.QSize(40, 30))
-        self.label_7.setMaximumSize(QtCore.QSize(40, 30))
+        self.label_7.setMinimumSize(QtCore.QSize(30, 30))
+        self.label_7.setMaximumSize(QtCore.QSize(30, 30))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.label_7.setFont(font)
         self.label_7.setObjectName("label_7")
         self.horizontalLayout_3.addWidget(self.label_7)
         self.time_finish = QtWidgets.QTextEdit(self.layoutWidget1)
-        self.time_finish.setMaximumSize(QtCore.QSize(16777215, 30))
+        self.time_finish.setMinimumSize(QtCore.QSize(35, 0))
+        self.time_finish.setMaximumSize(QtCore.QSize(35, 30))
         self.time_finish.setObjectName("time_finish")
         self.horizontalLayout_3.addWidget(self.time_finish)
+        self.label_12 = QtWidgets.QLabel(self.layoutWidget1)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_12.sizePolicy().hasHeightForWidth())
+        self.label_12.setSizePolicy(sizePolicy)
+        self.label_12.setMinimumSize(QtCore.QSize(5, 30))
+        self.label_12.setMaximumSize(QtCore.QSize(5, 30))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_12.setFont(font)
+        self.label_12.setObjectName("label_12")
+        self.horizontalLayout_3.addWidget(self.label_12)
+        self.time_finish_2 = QtWidgets.QTextEdit(self.layoutWidget1)
+        self.time_finish_2.setMinimumSize(QtCore.QSize(35, 0))
+        self.time_finish_2.setMaximumSize(QtCore.QSize(35, 30))
+        self.time_finish_2.setObjectName("time_finish_2")
+        self.horizontalLayout_3.addWidget(self.time_finish_2)
+        spacerItem = QtWidgets.QSpacerItem(50, 30, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_3.addItem(spacerItem)
+        self.checkBox = QtWidgets.QCheckBox(self.layoutWidget1)
+        self.checkBox.setMinimumSize(QtCore.QSize(100, 30))
+        self.checkBox.setMaximumSize(QtCore.QSize(100, 30))
+        self.checkBox.setObjectName("checkBox")
+        self.horizontalLayout_3.addWidget(self.checkBox)
         self.layoutWidget2 = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget2.setGeometry(QtCore.QRect(10, 350, 281, 31))
+        self.layoutWidget2.setGeometry(QtCore.QRect(10, 350, 281, 32))
         self.layoutWidget2.setObjectName("layoutWidget2")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.layoutWidget2)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -162,13 +208,13 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.output_name.setMaximumSize(QtCore.QSize(16777215, 30))
         self.output_name.setObjectName("output_name")
         self.horizontalLayout_4.addWidget(self.output_name)
-        self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(10, 390, 481, 32))
-        self.widget.setObjectName("widget")
-        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.widget)
+        self.layoutWidget3 = QtWidgets.QWidget(self.centralwidget)
+        self.layoutWidget3.setGeometry(QtCore.QRect(10, 390, 481, 32))
+        self.layoutWidget3.setObjectName("layoutWidget3")
+        self.horizontalLayout_5 = QtWidgets.QHBoxLayout(self.layoutWidget3)
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
-        self.label_9 = QtWidgets.QLabel(self.widget)
+        self.label_9 = QtWidgets.QLabel(self.layoutWidget3)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -181,14 +227,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.label_9.setFont(font)
         self.label_9.setObjectName("label_9")
         self.horizontalLayout_5.addWidget(self.label_9)
-        self.comboBox = QtWidgets.QComboBox(self.widget)
+        self.comboBox = QtWidgets.QComboBox(self.layoutWidget3)
         self.comboBox.setMinimumSize(QtCore.QSize(80, 30))
         self.comboBox.setMaximumSize(QtCore.QSize(80, 30))
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.horizontalLayout_5.addWidget(self.comboBox)
-        self.label_10 = QtWidgets.QLabel(self.widget)
+        self.label_10 = QtWidgets.QLabel(self.layoutWidget3)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -201,12 +247,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.label_10.setFont(font)
         self.label_10.setObjectName("label_10")
         self.horizontalLayout_5.addWidget(self.label_10)
-        self.workshop_name = QtWidgets.QTextEdit(self.widget)
+        self.workshop_name = QtWidgets.QTextEdit(self.layoutWidget3)
         self.workshop_name.setMinimumSize(QtCore.QSize(0, 30))
         self.workshop_name.setMaximumSize(QtCore.QSize(100, 30))
         self.workshop_name.setObjectName("workshop_name")
         self.horizontalLayout_5.addWidget(self.workshop_name)
-        self.pushButton_3 = QtWidgets.QPushButton(self.widget)
+        self.pushButton_3 = QtWidgets.QPushButton(self.layoutWidget3)
         self.pushButton_3.setMinimumSize(QtCore.QSize(70, 30))
         self.pushButton_3.setMaximumSize(QtCore.QSize(70, 30))
         self.pushButton_3.setObjectName("pushButton_3")
@@ -231,7 +277,10 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.pushButton.setText(_translate("MainWindow", "切片"))
         self.pushButton_2.setText(_translate("MainWindow", "关闭"))
         self.label_6.setText(_translate("MainWindow", "选择视频时长：从"))
-        self.label_7.setText(_translate("MainWindow", "到"))
+        self.label_11.setText(_translate("MainWindow", "："))
+        self.label_7.setText(_translate("MainWindow", " 到"))
+        self.label_12.setText(_translate("MainWindow", "："))
+        self.checkBox.setText(_translate("MainWindow", "播放视频"))
         self.label_8.setText(_translate("MainWindow", "输出的切片名称："))
         self.label_9.setText(_translate("MainWindow", "浏览器："))
         self.comboBox.setItemText(0, _translate("MainWindow", "Edge"))
@@ -242,7 +291,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def init_slots(self):
         self.pushButton.clicked.connect(self.split_video_to_gifs)  # 连接切片函数
         self.time_start.textChanged.connect(self.read_time_start)
+        self.time_start_2.textChanged.connect(self.read_time_start)
         self.time_finish.textChanged.connect(self.read_time_finish)
+        self.time_finish_2.textChanged.connect(self.read_time_finish)
         self.toolButtonInput.clicked.connect(self.InpurDir)           # 连接视频路径选择函数
         self.pushButton_3.clicked.connect(self.upload_gif)
         # self.toolButtonOutput.clicked.connect(self.SaveResults)
@@ -255,7 +306,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.workshop_name.setText('gif') #设置上传名称
 
     def InpurDir(self):
-        video_type = [".mp4", ".mkv", ".MOV", "avi"]
+        video_type = [".mp4", ".mkv", ".MOV", ".avi","m4v"]
         self.video_path = QtWidgets.QFileDialog.getOpenFileName()[0]
 
         #判断是否为视频文件
@@ -265,9 +316,10 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                     print("right")
                     break
                 else:
-                    QtWidgets.QMessageBox.information(self, "Error", "不支持该格式", QtWidgets.QMessageBox.Yes,
-                                                      QtWidgets.QMessageBox.Yes)
-                    return
+                    if vdi == "m4v":
+                        QtWidgets.QMessageBox.information(self, "Error", "不支持该格式", QtWidgets.QMessageBox.Yes,
+                                                          QtWidgets.QMessageBox.Yes)
+                        return
 
         if self.video_path:
             print("选择输入视频路径：", self.video_path)
@@ -276,13 +328,16 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
             # 获取视频时长,并设置文本框中时间
             duration = self.get_video_duration()
-            self.time_start.setText("0")
+            self.time_start.setText("00")
+            self.time_start_2.setText("00")
             if duration < 15:
                 self.finish_time = duration
-                self.time_finish.setText(str(duration))
+                self.time_finish.setText("00")
+                self.time_finish_2.setText(str(duration))
             else:
                 self.finish_time = 10
-                self.time_finish.setText("10")
+                self.time_finish.setText("00")
+                self.time_finish_2.setText("10")
 
             self.cap.open(self.video_path) #打开视频
             self.timer.start(30)   #设置视频播放计时器
@@ -304,16 +359,17 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def play_video(self):
         ret, img = self.cap.read()
         if ret:
-            cur_frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            #cur_frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
             # 视频流的长和宽
             height, width = img.shape[:2]
             # 对视频进行缩放，适应label大小
-            cur_frame = cv2.resize(cur_frame,(0, 0), fx= width / self.label.width(),fy= height / self.label.height())
+            #cur_frame = cv2.resize(img,(0, 0), fx= width / self.label.width(),fy= height / self.label.height())
             cur_frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
             pixmap = QImage(cur_frame, width, height, QImage.Format_RGB888)
             pixmap = QPixmap.fromImage(pixmap)
+            self.label.setScaledContents(True)
             # ratio = max(width / self.label.width(), height / self.label.height())
             # pixmap.setDevicePixelRatio(ratio)
             # 视频流置于label中间部分播放
@@ -324,17 +380,19 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         if ":" in self.time_start.toPlainText():
             print("minite")
         else:
-            self.start_time =int(self.time_start.toPlainText())
-            print("start time:", self.start_time)
+
+            print("start time:", self.time_start.toPlainText(),":", self.time_start_2.toPlainText())
 
     def read_time_finish(self):
         if ":" in self.time_finish.toPlainText():
             print("minite")
         else:
-            self.finish_time =int(self.time_finish.toPlainText())
-            print("finish time:", self.finish_time)
+
+            print("finish time:", self.time_finish.toPlainText(), ":", self.time_finish_2.toPlainText())
 
     def split_video_to_gifs(self):
+        self.start_time = int(self.time_start.toPlainText()) * 60 + int(self.time_start_2.toPlainText())  # 转化为秒
+        self.finish_time = int(self.time_finish.toPlainText()) * 60 + int(self.time_finish_2.toPlainText())  # 转化为秒
         # 读取视频文件
         video = moviepy.editor.VideoFileClip(self.video_path).subclip(self.start_time, self.finish_time)  # 取前10秒
         # video = VideoFileClip(input_video)
@@ -361,7 +419,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         # 关闭视频文件
         video.close()
-        print("ok")
+        #print("ok")
 
         max_size = 5 * 1024 * 1024  # 5MB in bytes
 
@@ -378,8 +436,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 # 计算缩放比例
                 original_width, original_height = im.size
                 scale_factor = (max_size / file_size) ** 0.5
-                new_width = int(original_width * scale_factor * 0.95)  # 0.95为缩放调节因子
-                new_height = int(original_height * scale_factor * 0.95)
+                new_width = int(original_width * scale_factor * 0.8)  # 0.9为缩放调节因子
+                new_height = int(original_height * scale_factor * 0.8)
 
                 resize_frames = [frame.resize((new_width, new_height)) for frame in ImageSequence.Iterator(im)]
                 resize_frames[0].save(f"{self.output_name.toPlainText()}_part{i}.gif", save_all=True, append_images=resize_frames[1:])
