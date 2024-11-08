@@ -431,12 +431,15 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         for i in range(1, 6):
             file_size = os.path.getsize(f"{self.output_name.toPlainText()}_part{i}.gif")
             if file_size <= max_size:
-                continue
+                if i == 5:
+                    flag = 0
+                    print("文件大小小于 5MB，不需要调整")
             else:
+                flag = 1
                 print("文件大小大于 5MB，需要调整")
                 break
-            print("文件大小小于 5MB，不需要调整")
 
+        if flag == 1:
             # 修改文件大小
             for i in range(1, 6):
                 im = Image.open(f"{self.output_name.toPlainText()}_part{i}.gif")
