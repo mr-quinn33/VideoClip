@@ -419,7 +419,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             gif_segment = video.crop(x1=start_x, x2=end_x, y1=0, y2=height)
 
             # 生成 GIF 文件
-            gif_segment.write_gif(f"{self.output_name.toPlainText()}_part{i + 1}.gif", fps=10)
+            gif_segment.write_gif(f"{self.output_name.toPlainText()}_part{i + 1}.gif", fps=6)
 
         # 关闭视频文件
         video.close()
@@ -446,8 +446,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 # 计算缩放比例
                 original_width, original_height = im.size
                 scale_factor = (max_size / file_size) ** 0.5
-                new_width = int(original_width * scale_factor * 0.8)  # 0.9为缩放调节因子
-                new_height = int(original_height * scale_factor * 0.8)
+                new_width = int(original_width * scale_factor * 0.85)  # 0.9为缩放调节因子
+                new_height = int(original_height * scale_factor * 0.85)
 
                 resize_frames = [frame.resize((new_width, new_height)) for frame in ImageSequence.Iterator(im)]
                 resize_frames[0].save(f"{self.output_name.toPlainText()}_part{i}.gif", save_all=True, append_images=resize_frames[1:])
@@ -487,20 +487,23 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             #等待网页加载
             WebDriverWait(driver, 15).until(lambda driver: driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input' )) #.find_element_by_id("someId"))
 
-            # 从文本文件逐行读取,输入到用户名和密码，并点击登录
-            with open("strings.txt", "r", encoding="utf-8") as file:
-                line1 = file.readline().strip()
-                line2 = file.readline().strip()
-                print("ID:", line1)
-                print("PASSWORD:", line2)
-                input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input')  # 获取该输入框的Xpath
-                input_element.clear()  # 清除该输入框中的原本内容
-                input_element.send_keys(line1)  # 向该输入框中添加搜索词
-                input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[2]/input')  # 获取该输入框的Xpath
-                input_element.clear()  # 清除该输入框中的原本内容
-                input_element.send_keys(line2)  # 向该输入框中添加搜索词
-                driver.find_element(By.CLASS_NAME, "LBS7IDpob52Sb4ZoKobh0").click()
-                driver.find_element(By.CLASS_NAME, "DjSvCZoKKfoNSmarsEcTS").click()
+            if os.path.exists("user.txt"):
+                # 从文本文件逐行读取,输入到用户名和密码，并点击登录
+                with open("user.txt", "r", encoding="utf-8") as file:
+                    line1 = file.readline().strip()
+                    line2 = file.readline().strip()
+                    print("ID:", line1)
+                    print("PASSWORD:", line2)
+                    input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[1]/input')  # 获取该输入框的Xpath
+                    input_element.clear()  # 清除该输入框中的原本内容
+                    input_element.send_keys(line1)  # 向该输入框中添加搜索词
+                    input_element = driver.find_element(By.XPATH,'//*[@id="responsive_page_template_content"]/div[1]/div[1]/div/div/div/div[2]/div/form/div[2]/input')  # 获取该输入框的Xpath
+                    input_element.clear()  # 清除该输入框中的原本内容
+                    input_element.send_keys(line2)  # 向该输入框中添加搜索词
+                    driver.find_element(By.CLASS_NAME, "LBS7IDpob52Sb4ZoKobh0").click()
+                    driver.find_element(By.CLASS_NAME, "DjSvCZoKKfoNSmarsEcTS").click()
+            else:
+                print("手动输入账号密码")
 
             # 判断是否登录成功
             while True:
