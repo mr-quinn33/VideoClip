@@ -307,6 +307,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.workshop_name.setText('gif') #设置上传名称
 
         self.checkBox.setChecked(True)
+        self.checkBox.clicked.connect(self.check_video_play)
 
     def InpurDir(self):
         video_type = [".mp4", ".mkv", ".MOV", ".avi","m4v"]
@@ -358,6 +359,14 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
     def init_timer(self):
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.play_video)
+
+    def check_video_play(self):
+        if self.checkBox.isChecked():
+            self.timer.start(30)
+            print("play video")
+        else:
+            self.timer.stop()
+            print("pause video")
 
     def play_video(self):
         ret, img = self.cap.read()
