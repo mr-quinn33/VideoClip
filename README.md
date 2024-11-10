@@ -1,5 +1,6 @@
 # VideoClip
 This repository provides an easy tool to split a specified video into 5 GIF animations and automatically upload them to your personal Steam Workshop, creating a dynamic showcase on Steam with just one click.
+![使用界面](images/展示效果.png)
 
 ## Features
 - **Automatic GIF Splitting**: Split any video into 5 equal-length GIFs.
@@ -34,6 +35,9 @@ To get started quickly, download the `.exe` version of the tool:
    ```bash
    python SteamVideoClip.py
    ```
+   
+![使用界面](images/使用界面.png)
+
 
 ## License
 This project is licensed under the MIT License.
