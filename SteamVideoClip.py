@@ -21,7 +21,8 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.setupUi(self)
         self.retranslateUi(self)
         self.init_slots()
-        self.video_path = ''   #视频路径
+        self.video_path = ''   # 视频路径
+        self.fps = 6           # 帧率，默认值为6
         self.init_timer()
         self.cap = cv2.VideoCapture()
         self.start_time = 0
@@ -30,9 +31,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(505, 474)
-        MainWindow.setMinimumSize(QtCore.QSize(505, 474))
-        MainWindow.setMaximumSize(QtCore.QSize(505, 474))
+        MainWindow.resize(505, 510)
+        MainWindow.setMinimumSize(QtCore.QSize(505, 510))
+        MainWindow.setMaximumSize(QtCore.QSize(505, 510))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -41,7 +42,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.label.setText("")
         self.label.setObjectName("label")
         self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget.setGeometry(QtCore.QRect(10, 270, 481, 32))
+        self.layoutWidget.setGeometry(QtCore.QRect(10, 270, 471, 32))
         self.layoutWidget.setObjectName("layoutWidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.layoutWidget)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
@@ -258,6 +259,28 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.pushButton_3.setMaximumSize(QtCore.QSize(70, 30))
         self.pushButton_3.setObjectName("pushButton_3")
         self.horizontalLayout_5.addWidget(self.pushButton_3)
+        self.layoutWidget4 = QtWidgets.QWidget(self.centralwidget)
+        self.layoutWidget4.setGeometry(QtCore.QRect(10, 430, 281, 32))
+        self.layoutWidget4.setObjectName("layoutWidget4")
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout(self.layoutWidget4)
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.label_fps = QtWidgets.QLabel(self.layoutWidget4)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_fps.sizePolicy().hasHeightForWidth())
+        self.label_fps.setSizePolicy(sizePolicy)
+        self.label_fps.setMinimumSize(QtCore.QSize(130, 30))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.label_fps.setFont(font)
+        self.label_fps.setObjectName("label_fps")
+        self.horizontalLayout_6.addWidget(self.label_fps)
+        self.fps_input = QtWidgets.QLineEdit(self.layoutWidget4)
+        self.fps_input.setMinimumSize(QtCore.QSize(50, 30))
+        self.fps_input.setObjectName("fps_input")
+        self.horizontalLayout_6.addWidget(self.fps_input)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 505, 23))
@@ -281,13 +304,15 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.label_11.setText(_translate("MainWindow", "："))
         self.label_7.setText(_translate("MainWindow", " 到"))
         self.label_12.setText(_translate("MainWindow", "："))
-        self.checkBox.setText(_translate("MainWindow", "播放视频"))
+        self.checkBox.setText(_translate("MainWindow", "是否播放视频"))
         self.label_8.setText(_translate("MainWindow", "输出的切片名称："))
         self.label_9.setText(_translate("MainWindow", "浏览器："))
         self.comboBox.setItemText(0, _translate("MainWindow", "Edge"))
         self.comboBox.setItemText(1, _translate("MainWindow", "Chorme"))
         self.label_10.setText(_translate("MainWindow", "创意工坊名称："))
         self.pushButton_3.setText(_translate("MainWindow", "上传"))
+        self.label_fps.setText(_translate("MainWindow", "帧率："))
+        self.fps_input.setText(_translate("MainWindow", "6"))
 
     def init_slots(self):
         self.pushButton.clicked.connect(self.split_video_to_gifs)  # 连接切片函数
@@ -299,16 +324,31 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         self.pushButton_3.clicked.connect(self.upload_gif)
         # self.toolButtonOutput.clicked.connect(self.SaveResults)
         self.pushButton_2.clicked.connect(self.close)
+        self.fps_input.textChanged.connect(self.read_fps)  # 连接帧率输入框
 
         pix = QPixmap('template_1.png')        #设置label图片
         self.label_template.setPixmap(pix)
         self.label_template.setScaledContents(True)  # 自适应QLabel大小
-        self.output_name.setPlainText("output_gif")
-        self.workshop_name.setText('gif') #设置上传名称
+        self.output_name.setPlainText("output")
+        self.workshop_name.setText('name') #设置上传名称
 
         self.checkBox.setChecked(True)
         self.checkBox.clicked.connect(self.check_video_play)
 
+    def read_fps(self):
+        try:
+            self.fps = int(self.fps_input.text())
+            print(f"帧率设置为: {self.fps}")
+        except ValueError:
+            self.fps = 6  # 如果输入无效，恢复默认值
+            print("无效的帧率输入，恢复默认值 6")
+
+    # 获取资源文件路径
+    # def resource_path(relative_path):
+    #     if hasattr(sys, '_MEIPASS'):
+    #         return os.path.join(sys._MEIPASS, relative_path)
+    #     return os.path.join(os.path.abspath("."), relative_path)    
+        
     def InpurDir(self):
         video_type = [".mp4", ".mkv", ".MOV", ".avi","m4v"]
         self.video_path = QtWidgets.QFileDialog.getOpenFileName()[0]
@@ -339,9 +379,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 self.time_finish.setText("00")
                 self.time_finish_2.setText(str(duration))
             else:
-                self.finish_time = 10
+                self.finish_time = 15
                 self.time_finish.setText("00")
-                self.time_finish_2.setText("10")
+                self.time_finish_2.setText("15")
 
             self.cap.open(self.video_path) #打开视频
             self.timer.start(30)   #设置视频播放计时器
@@ -350,9 +390,9 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         video = cv2.VideoCapture(self.video_path)
         frame_count = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
         frame_rate = video.get(cv2.CAP_PROP_FPS)
-        self.video_fps = int(frame_rate)               #更新视频帧率
+        self.video_fps = round(frame_rate)               #更新视频帧率
         print("fps:", self.video_fps)
-        duration = int(frame_count / frame_rate)
+        duration = round(frame_count / frame_rate)
         video.release()
         return duration
 
@@ -428,7 +468,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             gif_segment = video.crop(x1=start_x, x2=end_x, y1=0, y2=height)
 
             # 生成 GIF 文件
-            gif_segment.write_gif(f"{self.output_name.toPlainText()}_part{i + 1}.gif", fps=6)
+            gif_segment.write_gif(f"{self.output_name.toPlainText()}-{i + 1}.gif", fps = self.fps)
 
         # 关闭视频文件
         video.close()
@@ -438,7 +478,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
         # 检查文件大小,如果过大则进行缩小
         for i in range(1, 6):
-            file_size = os.path.getsize(f"{self.output_name.toPlainText()}_part{i}.gif")
+            file_size = os.path.getsize(f"{self.output_name.toPlainText()}-{i}.gif")
             if file_size <= max_size:
                 if i == 5:
                     flag = 0
@@ -451,7 +491,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
         if flag == 1:
             # 修改文件大小
             for i in range(1, 6):
-                im = Image.open(f"{self.output_name.toPlainText()}_part{i}.gif")
+                im = Image.open(f"{self.output_name.toPlainText()}-{i}.gif")
                 # 计算缩放比例
                 original_width, original_height = im.size
                 scale_factor = (max_size / file_size) ** 0.5
@@ -459,12 +499,12 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 new_height = int(original_height * scale_factor * 0.85)
 
                 resize_frames = [frame.resize((new_width, new_height)) for frame in ImageSequence.Iterator(im)]
-                resize_frames[0].save(f"{self.output_name.toPlainText()}_part{i}.gif", save_all=True, append_images=resize_frames[1:])
+                resize_frames[0].save(f"{self.output_name.toPlainText()}-{i}.gif", save_all=True, append_images=resize_frames[1:])
                 print("resize Done!")
 
         # 更改最后一个字节为21
         for i in range(1,6):
-            path = f"{self.output_name.toPlainText()}_part{i}.gif"
+            path = f"{self.output_name.toPlainText()}-{i}.gif"
             with open(path, 'rb') as f:
                 gif_data = bytearray(f.read())
 
@@ -540,11 +580,11 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
                 # 输入标题
                 input_element = driver.find_element(By.CLASS_NAME, 'titleField')
                 input_element.clear()  # 清除该输入框中的原本内容
-                input_element.send_keys(f"{self.workshop_name.toPlainText()}_{i}")   # 向该输入框中添加
+                input_element.send_keys(f"{self.workshop_name.toPlainText()}-{i}")   # 向该输入框中添加
                 # time.sleep(0.5)
 
                 # 上传gif文件
-                dir_path = os.path.abspath(f"{self.output_name.toPlainText()}_part{i}.gif")
+                dir_path = os.path.abspath(f"{self.output_name.toPlainText()}-{i}.gif")
                 driver.find_element(By.ID, 'file').send_keys(dir_path)
                 #time.sleep(0.5)
 
